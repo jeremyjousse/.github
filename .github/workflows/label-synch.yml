@@ -1,0 +1,26 @@
+name: Sync labels
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out shared label configuration
+        uses: actions/checkout@v7
+        with:
+          repository: jeremyjousse/.github
+          ref: main
+
+      - name: Run labeler
+        uses: crazy-max/ghaction-github-labeler@v6
+        with:
+          github-token: ${{ github.token }}
+          yaml-file: labels.yml
+          exclude: |
+            help*
+            *issue
